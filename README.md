@@ -5,5 +5,8 @@
 &nbsp;&nbsp;1.同一个事务内，如果只发生的读库，则读在slave上<br>
 &nbsp;&nbsp;2.同一个事务内，如果先发生的写库，则写和读都在master上<br>
 &nbsp;&nbsp;3.如果先读，再写，则写之前的读在slave上，写和写之后的读都在master上<br>
+<br>
+&nbsp;&nbsp;如果检测到slave不可用，但slave不支持写，则只使用master<br>
+&nbsp;&nbsp;如果检测到master不可用，但slave支持写，则只使用slave，适合于两个DB互为主从的场景
 
 spring中的配置<a href="https://github.com/gaohanghbut/masterslave-datasource/blob/master/src/test/spring/masterslave-datasource.xml">示例</a>
