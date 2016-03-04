@@ -127,7 +127,7 @@ final class PreparedMasterslaveStatement extends MasterslaveStatement implements
   }
 
   private void initStatementHolderDefault() throws SQLException {
-    if (preparedStatementHolder != null) {
+    if (preparedStatementHolder == null) {
       this.preparedStatementHolder = new AbstractPreparedStatementHolder() {
         @Override protected PreparedStatement createReadStatement() throws SQLException {
           return getMasterslaveConnection().targetConnection(true).prepareStatement(preparingSql);
