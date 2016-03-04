@@ -187,10 +187,12 @@ class MasterslaveStatement extends AbstractStatement {
       }
     }
     for (Statement statement : Arrays.asList(readStatement, writeStatement)) {
-      try {
-        statement.close();
-      } catch (SQLException e) {
-        last = e;
+      if (statement != null) {
+        try {
+          statement.close();
+        } catch (SQLException e) {
+          last = e;
+        }
       }
     }
     if (last != null) {
