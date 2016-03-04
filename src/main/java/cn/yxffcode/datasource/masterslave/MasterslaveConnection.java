@@ -106,10 +106,12 @@ class MasterslaveConnection extends AbstractConnection {
       }
     }
     for (Connection connection : Arrays.asList(writeConnection, readConnection)) {
-      try {
-        connection.close();
-      } catch (SQLException e) {
-        last = e;
+      if (connection != null) {
+        try {
+          connection.close();
+        } catch (SQLException e) {
+          last = e;
+        }
       }
     }
     if (last != null) {
