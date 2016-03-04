@@ -9,6 +9,6 @@
 &nbsp;&nbsp;如果检测到slave不可用，但slave不支持写，则只使用master<br>
 &nbsp;&nbsp;如果检测到master不可用，但slave支持写，则只使用slave，适合于两个DB互为主从的场景
 
-spring中的配置<a href="https://github.com/gaohanghbut/masterslave-datasource/blob/master/src/test/spring/masterslave-datasource.xml">示例</a><br>
+spring中的配置<a href="https://github.com/gaohanghbut/masterslave-datasource/blob/master/src/test/spring/masterslave-datasource.xml">示例</a>(与jdbc一样，可以不依赖spring使用)<br>
 
 <h3>限制：暂时不支持一主多从和双主多从的场景</h3>
