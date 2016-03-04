@@ -169,12 +169,14 @@ final class PreparedMasterslaveStatement extends MasterslaveStatement implements
 
   @Override public ResultSet executeQuery() throws SQLException {
     checkClosed();
-    return preparedStatementHolder.detectStatement().executeQuery();
+    execute();
+    return currentResultSet;
   }
 
   @Override public int executeUpdate() throws SQLException {
     checkClosed();
-    return preparedStatementHolder.detectStatement().executeUpdate();
+    execute();
+    return updateCount;
   }
 
   @Override public void setNull(int parameterIndex, int sqlType) throws SQLException {
@@ -282,7 +284,16 @@ final class PreparedMasterslaveStatement extends MasterslaveStatement implements
   }
 
   @Override public boolean execute() throws SQLException {
-    return preparedStatementHolder.detectStatement().execute();
+    PreparedStatement stm = preparedStatementHolder.detectStatement();
+    boolean hasResultSet = stm.execute();
+    if (hasResultSet) {
+      currentResultSet = stm.getResultSet();
+      openedResultSets.add(currentResultSet);
+    } else {
+      updateCount = stm.getUpdateCount();
+      currentResultSet = null;
+    }
+    return hasResultSet;
   }
 
   @Override public void addBatch() throws SQLException {
