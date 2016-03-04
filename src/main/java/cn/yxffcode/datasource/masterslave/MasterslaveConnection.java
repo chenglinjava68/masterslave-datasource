@@ -159,9 +159,7 @@ class MasterslaveConnection extends AbstractConnection {
       return writeConnection.getMetaData();
     } else {
       writeConnection = groupDataSource.readConnection();
-      if (!isAutoCommit) {
-        writeConnection.setAutoCommit(false);
-      }
+      normalizeConnection();
       return writeConnection.getMetaData();
     }
   }
@@ -228,11 +226,21 @@ class MasterslaveConnection extends AbstractConnection {
       readConnection = groupDataSource.readConnection();
     } else if (!read && writeConnection == null) {
       writeConnection = groupDataSource.writeConnection();
-      if (!isAutoCommit) {
-        writeConnection.setAutoCommit(false);
-      }
+      normalizeConnection();
     }
     return read ? readConnection : writeConnection;
+  }
+
+  private void normalizeConnection() throws SQLException {
+    if (!isAutoCommit) {
+      writeConnection.setAutoCommit(false);
+    }
+    if (transactionIsolation != -1) {
+      writeConnection.setTransactionIsolation(transactionIsolation);
+    }
+    if (catalog != null) {
+      writeConnection.setCatalog(catalog);
+    }
   }
 
 }
