@@ -137,6 +137,7 @@ final class PreparedMasterslaveStatement extends MasterslaveStatement implements
           return getMasterslaveConnection().targetConnection(false).prepareStatement(preparingSql);
         }
       };
+      isReadStatement = SQLParser.getSqlType(preparingSql).isRead();
     }
   }
 
