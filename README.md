@@ -1,4 +1,4 @@
-# masterslave-datasource
+<h2>masterslave-datasource</h2>
 支持主从的数据源，支持主从读写分离，可用性检测，基于jdbc实现。<br><br>
 
 读写分离的策略为复用master，即：<br>
@@ -11,4 +11,4 @@
 
 spring中的配置<a href="https://github.com/gaohanghbut/masterslave-datasource/blob/master/src/test/spring/masterslave-datasource.xml">示例</a><br>
 
-限制：暂时不支持一主多从和双主多从的场景
+<h3>限制：暂时不支持一主多从和双主多从的场景</h3>
