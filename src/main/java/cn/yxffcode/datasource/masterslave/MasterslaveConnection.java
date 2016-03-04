@@ -159,6 +159,9 @@ class MasterslaveConnection extends AbstractConnection {
       return writeConnection.getMetaData();
     } else {
       writeConnection = groupDataSource.readConnection();
+      if (!isAutoCommit) {
+        writeConnection.setAutoCommit(false);
+      }
       return writeConnection.getMetaData();
     }
   }
@@ -225,6 +228,9 @@ class MasterslaveConnection extends AbstractConnection {
       readConnection = groupDataSource.readConnection();
     } else if (!read && writeConnection == null) {
       writeConnection = groupDataSource.writeConnection();
+      if (!isAutoCommit) {
+        writeConnection.setAutoCommit(false);
+      }
     }
     return read ? readConnection : writeConnection;
   }
