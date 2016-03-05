@@ -6,6 +6,8 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
+
 /**
  * 支持读写分离的DataSource,适用于一主一从场景
  *
@@ -20,7 +22,7 @@ class MasterslaveDataSource extends AbstractDataSource {
   private volatile boolean masterAvailable = true;
   private volatile boolean slaveAvailable = true;
 
-  Connection readConnection() throws SQLException {
+  private Connection readConnection() throws SQLException {
     if (slave == null || !slaveAvailable) {
       return writeConnection();
     }
@@ -28,13 +30,16 @@ class MasterslaveDataSource extends AbstractDataSource {
   }
 
   Connection readConnection(String username, String password) throws SQLException {
+    if (isNullOrEmpty(username) && isNullOrEmpty(password)) {
+      return readConnection();
+    }
     if (slave == null || !slaveAvailable) {
       return writeConnection(username, password);
     }
     return slave.getConnection(username, password);
   }
 
-  Connection writeConnection() throws SQLException {
+  private Connection writeConnection() throws SQLException {
     if (!masterAvailable && slaveWritable && slaveAvailable) {
       return slave.getConnection();
     }
@@ -42,6 +47,9 @@ class MasterslaveDataSource extends AbstractDataSource {
   }
 
   Connection writeConnection(String username, String password) throws SQLException {
+    if (isNullOrEmpty(username) && isNullOrEmpty(password)) {
+      return writeConnection();
+    }
     if (!masterAvailable && slaveWritable && slaveAvailable) {
       return slave.getConnection();
     }

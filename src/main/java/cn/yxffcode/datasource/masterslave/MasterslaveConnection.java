@@ -158,9 +158,9 @@ class MasterslaveConnection extends AbstractConnection {
     } else if (writeConnection != null) {
       return writeConnection.getMetaData();
     } else {
-      writeConnection = groupDataSource.readConnection();
+      readConnection = groupDataSource.readConnection(username, password);
       normalizeConnection();
-      return writeConnection.getMetaData();
+      return readConnection.getMetaData();
     }
   }
 
@@ -223,9 +223,9 @@ class MasterslaveConnection extends AbstractConnection {
       return writeConnection;
     }
     if (read && readConnection == null) {
-      readConnection = groupDataSource.readConnection();
+      readConnection = groupDataSource.readConnection(username, password);
     } else if (!read && writeConnection == null) {
-      writeConnection = groupDataSource.writeConnection();
+      writeConnection = groupDataSource.writeConnection(username, password);
       normalizeConnection();
     }
     return read ? readConnection : writeConnection;
