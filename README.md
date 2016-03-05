@@ -11,4 +11,4 @@
 
 spring中的配置<a href="https://github.com/gaohanghbut/masterslave-datasource/blob/master/src/test/spring/masterslave-datasource.xml">示例</a>(与jdbc一样，可以不依赖spring使用)<br>
 
-<h3>限制：暂时不支持一主多从和双主多从的场景， 不支持Savepoint</h3>
+<h3>限制：暂时不支持一主多从和双主多从的场景， 不支持Savepoint，暂时不支持存储过程</h3>
